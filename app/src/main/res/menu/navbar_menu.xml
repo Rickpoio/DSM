@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+<item
+    android:id="@+id/perfil"
+    android:icon="@drawable/icono_profile"
+    android:title="Perfil"
+    />
+    <item
+        android:id="@+id/noticias"
+        android:icon="@drawable/icono_news"
+        android:title="Noticias"
+        />
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/icono_home"
+        android:title="Dashboard"
+        />
+    <item
+        android:id="@+id/presupuestos"
+        android:icon="@drawable/icono_presupuestos"
+        android:title="Presupuestos"
+        />
+    <item
+        android:id="@+id/movimientos"
+        android:icon="@drawable/icono_movimiento"
+        android:title="Movimientos"
+        />
+</menu>
