@@ -1,5 +1,6 @@
 package com.example.proyectodecatedra
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -38,7 +39,7 @@ class registro : AppCompatActivity() {
     fun registrarUsuario(){
         btnregistro.setOnClickListener {
             val email = findViewById<EditText>(R.id.correoedit).text.toString()
-            val password = findViewById<EditText>(R.id.passhint).text.toString()
+            val password = findViewById<EditText>(R.id.et_pass).text.toString()
             this.registro(email, password)
         }
     }
@@ -47,26 +48,16 @@ class registro : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             task ->
             if (task.isSuccessful){
-                Log.d(Tag,"createUserWithEmail:success")
-                val user = auth.currentUser
-                actualizarIU(user)
-            }else{
-                Log.w(Tag,"createUserWithEmail:failure", task.exception)
-                Toast.makeText(this, "Autenticacion fallida", Toast.LENGTH_SHORT).show()
-                actualizarIU(null)
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
             }
+        }.addOnFailureListener { exception ->
+            Toast.makeText(
+                applicationContext,
+                exception.localizedMessage,
+                Toast.LENGTH_LONG
+            ).show()
         }
-    }
-
-    private fun refrescar(){
-
-    }
-
-    private fun actualizarIU(user: FirebaseUser?){
-
-    }
-
-    companion object{
-       private const val Tag = "EmailPassword"
     }
 }

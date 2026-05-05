@@ -50,6 +50,10 @@ class login : AppCompatActivity() {
        tvregistro.setOnClickListener {
            this.onClickRegistro()
        }
+
+       btnlogin.setOnClickListener {
+           this.Ingresar()
+       }
     }
 
     public override fun onStart(){
@@ -69,6 +73,7 @@ class login : AppCompatActivity() {
             startActivity(llamar)
         }
     }
+
     //funcion para el uso del boton de iniciar sesion
     fun Ingresar(){
         btnlogin.setOnClickListener {
@@ -84,6 +89,8 @@ class login : AppCompatActivity() {
         task ->
             if (task.isSuccessful){
                 Log.d(Tag, "signInWithEmail:success")
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
                 val user = auth.currentUser
                 actualizarIU(user)
             }else{
@@ -91,6 +98,12 @@ class login : AppCompatActivity() {
                 Toast.makeText(this,"fallo la autenticacion", Toast.LENGTH_SHORT).show()
                 actualizarIU(null)
             }
+        }.addOnFailureListener { exception ->
+            Toast.makeText(
+                applicationContext,
+                exception.localizedMessage,
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
