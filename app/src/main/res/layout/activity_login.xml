@@ -90,7 +90,8 @@
                 android:autofillHints="emailAddress"
                 android:drawablePadding="12dp"
                 android:paddingStart="12dp"
-                android:drawableStart="@drawable/selector_mail"
+                android:drawableStart="@drawable/icono_mail"
+                android:drawableTint="@color/selector_boxes"
                 android:background="@drawable/selector_et_redondo"
                 />
             <TextView
@@ -118,7 +119,8 @@
                 android:inputType="textPassword"
                 android:autofillHints="false"
                 android:paddingStart="12dp"
-                android:drawableStart="@drawable/selector_pass"
+                android:drawableStart="@drawable/icono_pass"
+                android:drawableTint="@color/selector_boxes"
                 android:background="@drawable/selector_et_redondo"
                 />
             <TextView
