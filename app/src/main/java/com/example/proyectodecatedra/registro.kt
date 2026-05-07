@@ -10,8 +10,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.example.proyectodecatedra.data.SupabaseProvider
+import com.example.proyectodecatedra.data.usuariosData
+import io.github.jan.supabase.postgrest.from
+import kotlinx.coroutines.launch
 
 class registro : AppCompatActivity() {
 
@@ -38,19 +42,40 @@ class registro : AppCompatActivity() {
 
     fun registrarUsuario(){
         btnregistro.setOnClickListener {
+            val nombre = findViewById<EditText>(R.id.et_nombre).text.toString()
             val email = findViewById<EditText>(R.id.correoedit).text.toString()
             val password = findViewById<EditText>(R.id.et_pass).text.toString()
-            this.registro(email, password)
+            this.registro(email, password, nombre)
         }
     }
 
-    private fun registro (email: String, password: String){
+    private fun registro (email: String, password: String, nombre: String){
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             task ->
             if (task.isSuccessful){
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+                val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+                if (uid != null) {
+                    lifecycleScope.launch {
+                        try {
+                            val nuevoUsuario = usuariosData(
+                                        id = uid,
+                                        nombre = nombre,
+                                        correo = email
+                                    )
+                            SupabaseProvider.client.from("usuarios").insert(nuevoUsuario)
+                            Log.d("SUPABASE_EXITO", "se inserto")
+                            val intent = Intent(this@registro, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }catch (e: Exception){
+                            Toast.makeText(this@registro, "error en DB: ${e.message}", Toast.LENGTH_SHORT ).show()
+                            Log.e("SUPABASE_ERROR", "error ${e.localizedMessage}")
+                            e.printStackTrace()
+                        }
+                    }
+
+                }
             }
         }.addOnFailureListener { exception ->
             Toast.makeText(
