@@ -18,6 +18,9 @@ supabase = "2.5.0"
 ktor = "2.3.11"
 kotlinxSerialization = "1.6.3"
 secretsPlugin = "2.0.1"
+retrofit = "2.9.0"
+gson = "2.9.0"
+okhttpLogingInterceptor = "4.9.3"
 okhttp = "4.9.1"
 
 [libraries]
@@ -38,6 +41,9 @@ ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 supabase-bom = { group = "io.github.jan-tennert.supabase", name = "bom", version.ref = "supabase" }
 okhttp = {module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp"}
+retrofit = {module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit"}
+retrofit-converter-gson = {module = "com.squareup.retrofit2:converter-gson", version.ref = "gson"}
+okhttp-logging-interceptor = {module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttpLogingInterceptor"}
 
 [plugins]
 google-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsPlugin" }
