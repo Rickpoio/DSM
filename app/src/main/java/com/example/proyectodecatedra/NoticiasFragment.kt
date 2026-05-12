@@ -5,6 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.util.Log
+import androidx.recyclerview.widget.RecyclerView
+import com.example.proyectodecatedra.data.Noticia
+import com.example.proyectodecatedra.data.NoticiaAdapter
+import com.example.proyectodecatedra.data.NoticiaApi
+import android.widget.Toast
+import com.example.proyectodecatedra.data.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import androidx.recyclerview.widget.LinearLayoutManager
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +33,7 @@ class NoticiasFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -28,15 +41,87 @@ class NoticiasFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
+    //Prueba de retrofit
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: NoticiaAdapter
+    private lateinit var api: NoticiaApi
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_noticias, container, false)
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        recyclerView = view.findViewById(R.id.scrollablenoticias)
+
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext())
+
+        api = RetrofitClient.instance
+
+        cargarDatos(api)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        cargarDatos(api)
+    }
+    private fun cargarDatos(api: NoticiaApi) {
+
+        val call = api.obtenerNoticias()
+
+        call.enqueue(object : Callback<List<Noticia>> {
+
+            override fun onResponse(
+                call: Call<List<Noticia>>,
+                response: Response<List<Noticia>>
+            ) {
+
+                if (response.isSuccessful) {
+
+                    val noticias = response.body()
+
+                    if (noticias != null) {
+
+                        adapter = NoticiaAdapter(noticias)
+                        recyclerView.adapter = adapter
+
+                        // Listener del RecyclerView
+
+                    }
+
+                } else {
+
+                    val error = response.errorBody()?.string()
+
+                    Log.e("API", "Error al obtener los trabajos: $error")
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Error al obtener los trabajos",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Noticia>>, t: Throwable) {
+
+                Log.e("API", "Error: ${t.message}")
+
+                Toast.makeText(
+                    requireContext(),
+                    "Error de conexión",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
+//Fin de la prueba
     companion object {
         /**
          * Use this factory method to create a new instance of
