@@ -2,9 +2,9 @@ package com.example.proyectodecatedra.data
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
+import com.example.proyectodecatedra.BuildConfig
 object RetrofitClient {
-    private const val BASE_URL ="https://69daaea726585bd92dd40a70.mockapi.io/"
+    private const val BASE_URL = BuildConfig.noticiasApiUrl
     val instance: NoticiaApi by lazy {
         val retrofit=Retrofit.Builder()
             .baseUrl(BASE_URL)
