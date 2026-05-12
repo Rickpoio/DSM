@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
-import com.example.proyectodecatedra.data.SupabaseProvider
+import com.example.proyectodecatedra.network.SupabaseProvider
 import com.example.proyectodecatedra.data.usuariosData
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.launch
