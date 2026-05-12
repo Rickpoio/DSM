@@ -39,6 +39,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="fecha"
                 />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
