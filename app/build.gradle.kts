@@ -70,4 +70,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
+    implementation("androidx.fragment:fragment-ktx:1.8.2")
+
+    implementation("com.google.firebase:firebase-firestore-ktx:25.1.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 }
