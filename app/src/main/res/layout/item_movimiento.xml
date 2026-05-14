@@ -116,8 +116,8 @@
                     android:layout_height="34dp"
                     android:background="#E8F5E9"
                     android:padding="7dp"
-                    android:src="@android:drawable/ic_menu_edit"
-                    android:tint="#4CAF50"/>
+                    android:src="@android:drawable/ic_menu_edit"/>
+                    <!--android:tint="#4CAF50"/>-->
 
                 <ImageButton
                     android:id="@+id/btnEliminar"
@@ -126,8 +126,8 @@
                     android:layout_marginStart="8dp"
                     android:background="#FFEBEE"
                     android:padding="7dp"
-                    android:src="@android:drawable/ic_menu_delete"
-                    android:tint="#F44336"/>
+                    android:src="@android:drawable/ic_menu_delete"/>
+                    <!--android:tint="#F44336"/>-->
 
             </LinearLayout>
 
