@@ -55,6 +55,10 @@ lateinit var bottomNav : BottomNavigationView
                    loadFragment(MovimientosFragment())
                    true
                }
+               R.id.Mismovimientos -> {
+                   loadFragment(MisMovimientosFragment())
+                   true
+               }
                else -> false
            }
         }

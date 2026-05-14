@@ -10,33 +10,39 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.proyectodecatedra.data.Movimiento
-import com.google.android.material.button.MaterialButton
-import com.google.firebase.firestore.FirebaseFirestore
 import androidx.lifecycle.lifecycleScope
+import com.example.proyectodecatedra.data.Movimiento
 import com.example.proyectodecatedra.network.SupabaseProvider
+import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.FirebaseAuth
+import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.launch
-import com.google.firebase.auth.FirebaseAuth
 
 class MovimientosFragment : Fragment() {
 
-    private val db = FirebaseFirestore.getInstance()
+
+    // BOTONES
 
     private lateinit var btnIngreso: MaterialButton
     private lateinit var btnGasto: MaterialButton
     private lateinit var btnGuardar: MaterialButton
     private lateinit var btnCancelar: MaterialButton
 
+    // INPUTS
+
     private lateinit var etTitulo: EditText
     private lateinit var etDescripcion: EditText
     private lateinit var etMonto: EditText
+
     private lateinit var etDia: EditText
     private lateinit var etMes: EditText
     private lateinit var etAnio: EditText
 
     private lateinit var spCategoria: Spinner
     private lateinit var spMetodoPago: Spinner
+
+    // TIPO
 
     private var tipoMovimiento = "ingreso"
 
@@ -53,18 +59,23 @@ class MovimientosFragment : Fragment() {
         )
 
         inicializarVistas(view)
-        configurarSpinners()
-        configurarBotones()
 
+        configurarSpinners()
+
+        configurarBotones()
         return view
     }
 
     private fun inicializarVistas(view: View) {
 
+        // BOTONES
+
         btnIngreso = view.findViewById(R.id.btnIngreso)
         btnGasto = view.findViewById(R.id.btnGasto)
         btnGuardar = view.findViewById(R.id.btnGuardar)
         btnCancelar = view.findViewById(R.id.btnCancelar)
+
+        // INPUTS
 
         etTitulo = view.findViewById(R.id.etTitulo)
         etDescripcion = view.findViewById(R.id.etDescripcion)
@@ -74,9 +85,19 @@ class MovimientosFragment : Fragment() {
         etMes = view.findViewById(R.id.etMes)
         etAnio = view.findViewById(R.id.etAnio)
 
+        // SPINNERS
+
         spCategoria = view.findViewById(R.id.spCategoria)
         spMetodoPago = view.findViewById(R.id.spMetodoPago)
+
+        // RECYCLER
     }
+
+
+
+
+
+
 
     private fun configurarSpinners() {
 
@@ -119,12 +140,6 @@ class MovimientosFragment : Fragment() {
 
             btnIngreso.setBackgroundColor(Color.parseColor("#DFF5E1"))
             btnGasto.setBackgroundColor(Color.parseColor("#F3F3F3"))
-
-            Toast.makeText(
-                requireContext(),
-                "Tipo: Ingreso",
-                Toast.LENGTH_SHORT
-            ).show()
         }
 
         btnGasto.setOnClickListener {
@@ -133,12 +148,6 @@ class MovimientosFragment : Fragment() {
 
             btnGasto.setBackgroundColor(Color.parseColor("#FFDADA"))
             btnIngreso.setBackgroundColor(Color.parseColor("#F3F3F3"))
-
-            Toast.makeText(
-                requireContext(),
-                "Tipo: Gasto",
-                Toast.LENGTH_SHORT
-            ).show()
         }
 
         btnGuardar.setOnClickListener {
@@ -149,23 +158,21 @@ class MovimientosFragment : Fragment() {
         btnCancelar.setOnClickListener {
 
             limpiarFormulario()
-
-            Toast.makeText(
-                requireContext(),
-                "Formulario limpiado",
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 
     private fun guardarMovimiento() {
 
         val titulo = etTitulo.text.toString().trim()
+
         val descripcion = etDescripcion.text.toString().trim()
+
         val montoTexto = etMonto.text.toString().trim()
 
         val dia = etDia.text.toString().trim()
+
         val mes = etMes.text.toString().trim()
+
         val anio = etAnio.text.toString().trim()
 
         val metodoPago = spMetodoPago.selectedItem.toString()
@@ -173,12 +180,14 @@ class MovimientosFragment : Fragment() {
         if (titulo.isEmpty()) {
 
             etTitulo.error = "Ingrese un título"
+
             return
         }
 
         if (montoTexto.isEmpty()) {
 
             etMonto.error = "Ingrese un monto"
+
             return
         }
 
@@ -195,7 +204,6 @@ class MovimientosFragment : Fragment() {
 
         val fecha = "$anio-$mes-$dia"
 
-        // TEMPORAL
         val categoriaSeleccionada = spCategoria.selectedItem.toString()
 
         val categoriaId = when (categoriaSeleccionada) {
@@ -263,19 +271,25 @@ class MovimientosFragment : Fragment() {
     private fun limpiarFormulario() {
 
         etTitulo.text.clear()
+
         etDescripcion.text.clear()
+
         etMonto.text.clear()
 
         etDia.text.clear()
+
         etMes.text.clear()
+
         etAnio.text.clear()
 
         spCategoria.setSelection(0)
+
         spMetodoPago.setSelection(0)
 
         tipoMovimiento = "ingreso"
 
         btnIngreso.setBackgroundColor(Color.parseColor("#DFF5E1"))
+
         btnGasto.setBackgroundColor(Color.parseColor("#F3F3F3"))
     }
 }
