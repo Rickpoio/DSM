@@ -23,15 +23,5 @@
         android:title="Noticias"
         />
 
-    <item
-        android:id="@+id/presupuestos"
-        android:icon="@drawable/icono_presupuestos"
-        android:title="Presupuestos"
-        />
 
-    <item
-        android:id="@+id/perfil"
-        android:icon="@drawable/icono_profile"
-        android:title="Perfil"
-        />
 </menu>

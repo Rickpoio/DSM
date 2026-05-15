@@ -39,18 +39,12 @@ lateinit var bottomNav : BottomNavigationView
                    loadFragment(DashBoardFragment())
                    true
                }
-               R.id.perfil -> {
-                   loadFragment(PerfilFragment())
-                   true
-               }
+
                R.id.noticias -> {
                    loadFragment(NoticiasFragment())
                    true
                }
-               R.id.presupuestos -> {
-                   loadFragment(PresupuestosFragment())
-                   true
-               }
+
                R.id.movimientos -> {
                    loadFragment(MovimientosFragment())
                    true
