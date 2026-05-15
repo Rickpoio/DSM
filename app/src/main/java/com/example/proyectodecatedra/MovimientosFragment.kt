@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.launch
+import com.example.proyectodecatedra.data.ActualizarMovimiento
 
 class MovimientosFragment : Fragment() {
 
@@ -46,6 +47,11 @@ class MovimientosFragment : Fragment() {
 
     private var tipoMovimiento = "ingreso"
 
+    // cuando se presiona editar
+    private var modoEdicion = false
+
+    private var movimientoId = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,8 +69,10 @@ class MovimientosFragment : Fragment() {
         configurarSpinners()
 
         configurarBotones()
+        recibirDatosEdicion()
         return view
     }
+
 
     private fun inicializarVistas(view: View) {
 
@@ -152,12 +160,78 @@ class MovimientosFragment : Fragment() {
 
         btnGuardar.setOnClickListener {
 
-            guardarMovimiento()
+            if (modoEdicion) {
+
+                actualizarMovimiento()
+
+            } else {
+
+                guardarMovimiento()
+            }
         }
 
         btnCancelar.setOnClickListener {
 
             limpiarFormulario()
+        }
+    }
+
+    private fun recibirDatosEdicion() {
+
+        arguments?.let {
+
+            modoEdicion = true
+
+            movimientoId = it.getInt("id")
+
+            etDescripcion.setText(
+                it.getString("descripcion")
+            )
+
+            etMonto.setText(
+                it.getDouble("monto").toString()
+            )
+
+            val fecha = it.getString("fecha") ?: ""
+
+            if (fecha.contains("-")) {
+
+                val partes = fecha.split("-")
+
+                if (partes.size == 3) {
+
+                    etAnio.setText(partes[0])
+                    etMes.setText(partes[1])
+                    etDia.setText(partes[2])
+                }
+            }
+
+            tipoMovimiento =
+                it.getString("tipo") ?: "gasto"
+
+            if (tipoMovimiento == "ingreso") {
+
+                btnIngreso.setBackgroundColor(
+                    Color.parseColor("#DFF5E1")
+                )
+
+                btnGasto.setBackgroundColor(
+                    Color.parseColor("#F3F3F3")
+                )
+
+            } else {
+
+                btnGasto.setBackgroundColor(
+                    Color.parseColor("#FFDADA")
+                )
+
+                btnIngreso.setBackgroundColor(
+                    Color.parseColor("#F3F3F3")
+                )
+            }
+
+            btnGuardar.text =
+                "Actualizar Movimiento"
         }
     }
 
@@ -254,6 +328,82 @@ class MovimientosFragment : Fragment() {
                 ).show()
 
                 limpiarFormulario()
+
+            } catch (e: Exception) {
+
+                e.printStackTrace()
+
+                Toast.makeText(
+                    requireContext(),
+                    e.message,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun actualizarMovimiento() {
+
+        val descripcion =
+            etDescripcion.text.toString().trim()
+
+        val montoTexto =
+            etMonto.text.toString().trim()
+
+        val dia = etDia.text.toString().trim()
+        val mes = etMes.text.toString().trim()
+        val anio = etAnio.text.toString().trim()
+
+        val metodoPago =
+            spMetodoPago.selectedItem.toString()
+
+        val fecha = "$anio-$mes-$dia"
+
+        val movimientoActualizado = ActualizarMovimiento(
+
+            descripcion = descripcion,
+
+            monto = montoTexto.toDouble(),
+
+            metodo_pago = metodoPago,
+
+            fecha = fecha,
+
+            tipo = tipoMovimiento
+        )
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            try {
+
+                SupabaseProvider.client
+                    .from("movimientos")
+                    .update(
+                        movimientoActualizado
+                    ) {
+
+                        filter {
+
+                            filter(
+                                column = "id",
+                                operator = io.github.jan.supabase.postgrest.query.filter.FilterOperator.EQ,
+                                value = movimientoId
+                            )
+                        }
+                    }
+
+                Toast.makeText(
+                    requireContext(),
+                    "Movimiento actualizado",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                limpiarFormulario()
+
+                modoEdicion = false
+
+                btnGuardar.text =
+                    "Guardar Movimiento"
 
             } catch (e: Exception) {
 

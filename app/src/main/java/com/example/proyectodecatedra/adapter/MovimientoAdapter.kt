@@ -21,6 +21,8 @@ class MovimientoAdapter(
         val tvTitulo: TextView = view.findViewById(R.id.tvTitulo)
         val tvMonto: TextView = view.findViewById(R.id.tvMonto)
         val tvFecha: TextView = view.findViewById(R.id.tvFecha)
+        val tvHora: TextView = view.findViewById(R.id.tvHora)
+
 
         val chipMetodo: Chip = view.findViewById(R.id.chipMetodo)
         val chipCategoria: Chip = view.findViewById(R.id.chipCategoria)
@@ -42,6 +44,21 @@ class MovimientoAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val movimiento = lista[position]
+
+        val fechaCompleta = movimiento.fecha_creacion ?: ""
+
+        if (fechaCompleta.contains("T")) {
+
+            val hora = fechaCompleta
+                .substringAfter("T")
+                .substring(0,5)
+
+            holder.tvHora.text = hora
+
+        } else {
+
+            holder.tvHora.text = ""
+        }
 
         holder.tvTitulo.text =
             movimiento.descripcion ?: "Sin descripción"

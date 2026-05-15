@@ -19,5 +19,6 @@ data class MovimientoResponse(
 
     val descripcion: String? = null,
 
-    val fecha: String? = null
+    val fecha: String? = null,
+    val fecha_creacion: String?
 )

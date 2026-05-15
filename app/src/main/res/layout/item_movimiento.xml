@@ -58,23 +58,25 @@
             android:paddingStart="10dp"
             android:paddingTop="5dp"
             android:paddingEnd="10dp"
-            android:paddingBottom="5dp">
+            android:paddingBottom="5dp"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/tvFecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Apr 1, 2025"
+                android:text="2026-05-13"
                 android:textColor="#666666"
                 android:textSize="12sp"/>
 
             <TextView
+                android:id="@+id/tvHora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="9:41 AM"
-                android:textColor="#666666"
-                android:textSize="12sp"/>
+                android:text="21:45"
+                android:textColor="#999999"
+                android:textSize="11sp"/>
 
         </LinearLayout>
 
@@ -116,7 +118,7 @@
                     android:layout_height="34dp"
                     android:background="#E8F5E9"
                     android:padding="7dp"
-                    android:src="@android:drawable/ic_menu_edit"/>
+                    android:src="@drawable/edit_square_30dp_75fb4c_fill0_wght400_grad0_opsz24"/>
                     <!--android:tint="#4CAF50"/>-->
 
                 <ImageButton
@@ -126,8 +128,8 @@
                     android:layout_marginStart="8dp"
                     android:background="#FFEBEE"
                     android:padding="7dp"
-                    android:src="@android:drawable/ic_menu_delete"/>
-                    <!--android:tint="#F44336"/>-->
+                    android:src="@drawable/delete_30dp_ea3323_fill0_wght400_grad0_opsz24"/>
+                <!--android:tint="#F44336"/>-->
 
             </LinearLayout>
 

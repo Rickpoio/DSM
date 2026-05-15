@@ -15,6 +15,7 @@ import com.example.proyectodecatedra.network.SupabaseProvider
 import com.google.firebase.auth.FirebaseAuth
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.launch
+import io.github.jan.supabase.postgrest.query.filter.FilterOperator
 import android.content.Context
 class MisMovimientosFragment : Fragment() {
 
@@ -47,20 +48,12 @@ class MisMovimientosFragment : Fragment() {
 
             onEditar = { movimiento ->
 
-                Toast.makeText(
-                    requireContext(),
-                    "Editar: ${movimiento.id}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                editarMovimiento(movimiento)
             },
 
             onEliminar = { movimiento ->
 
-                Toast.makeText(
-                    requireContext(),
-                    "Eliminar: ${movimiento.id}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                eliminarMovimiento(movimiento)
             }
         )
 
@@ -109,5 +102,84 @@ class MisMovimientosFragment : Fragment() {
                 ).show()
             }
         }
+    }
+
+    private fun eliminarMovimiento(movimiento: MovimientoResponse) {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            try {
+
+                SupabaseProvider.client
+                    .from("movimientos")
+                    .delete {
+
+                        filter {
+                            filter(
+                                column = "id",
+                                operator = FilterOperator.EQ,
+                                value = movimiento.id
+                            )
+                        }
+                    }
+
+                Toast.makeText(
+                    requireContext(),
+                    "Movimiento eliminado",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                obtenerMovimientos()
+
+            } catch (e: Exception) {
+
+                e.printStackTrace()
+
+                Toast.makeText(
+                    requireContext(),
+                    e.message,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun editarMovimiento(
+        movimiento: MovimientoResponse
+    ) {
+
+        val fragment = MovimientosFragment()
+
+        val bundle = Bundle()
+
+        bundle.putInt("id", movimiento.id)
+
+        bundle.putString(
+            "descripcion",
+            movimiento.descripcion
+        )
+
+        bundle.putDouble(
+            "monto",
+            movimiento.monto ?: 0.0
+        )
+
+        bundle.putString(
+            "fecha",
+            movimiento.fecha
+        )
+
+        bundle.putString(
+            "tipo",
+            movimiento.tipo
+        )
+
+        fragment.arguments = bundle
+
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
