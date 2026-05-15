@@ -9,9 +9,9 @@ import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectodecatedra.data.Noticia
 import com.example.proyectodecatedra.data.NoticiaAdapter
-import com.example.proyectodecatedra.data.NoticiaApi
+import com.example.proyectodecatedra.network.NoticiaApi
 import android.widget.Toast
-import com.example.proyectodecatedra.data.RetrofitClient
+import com.example.proyectodecatedra.network.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,7 +61,7 @@ class NoticiasFragment : Fragment() {
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext())
 
-        api = RetrofitClient.instance
+        api = ApiClient.instance
 
         cargarDatos(api)
     }

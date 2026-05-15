@@ -13,12 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoDeCatedra">
-        <activity
-            android:name=".data.ActualizarNoticiaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".data.CrearNoticiaActivity"
-            android:exported="false" />
+
         <activity
             android:name=".login"
             android:exported="true">

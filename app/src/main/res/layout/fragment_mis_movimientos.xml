@@ -7,28 +7,91 @@
     android:layout_height="match_parent"
     android:background="#ECECEC">
 
-    <!-- HEADER -->
-
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/cyan"
         android:stateListAnimator="@null"
         app:elevation="0dp">
 
-        <androidx.appcompat.widget.Toolbar
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- TITULO -->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mis Movimientos"
                 android:textColor="#FFFFFF"
-                android:textSize="35sp"
-                android:textStyle="bold"/>
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"/>
 
-        </androidx.appcompat.widget.Toolbar>
+            <!-- FILTROS -->
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- FECHA -->
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etFecha"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Seleccionar fecha"
+                            android:focusable="false"
+                            android:clickable="true"
+                            android:drawableEnd="@android:drawable/ic_menu_my_calendar"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- METODO PAGO -->
+
+                    <Spinner
+                        android:id="@+id/spMetodoPago"
+                        android:layout_width="180dp"
+                        android:layout_height="55dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@android:drawable/editbox_background"/>
+
+                    <!-- FILTRO MONTO -->
+
+                    <Button
+                        android:id="@+id/btnMonto"
+                        android:layout_width="150dp"
+                        android:layout_height="55dp"
+                        android:text="Monto"
+                        android:layout_marginEnd="8dp"/>
+
+                    <!-- TIPO -->
+
+                    <Spinner
+                        android:id="@+id/spTipo"
+                        android:layout_width="150dp"
+                        android:layout_height="55dp"
+                        android:background="@android:drawable/editbox_background"/>
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -38,11 +101,10 @@
         android:id="@+id/rvMovimientos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="220dp"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:paddingBottom="90dp"
-        android:clipToPadding="false"
-        android:overScrollMode="never"/>
+        android:clipToPadding="false"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
