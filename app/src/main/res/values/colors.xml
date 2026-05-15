@@ -6,4 +6,15 @@
     <color name="cyan">#6155F5</color>
     <color name="gris">#D9D9D9</color>
     <color name="gris_oscuro">#4D4C4C</color>
+
+    <color name="purple_main">#6155F5</color>
+    <color name="green_amount">#A7D6A0</color>
+    <color name="tan_amount">#DABFA9</color>
+    <color name="light_gray_bg">#F2F2F2</color>
+    <color name="light_green_alert">#EAF8EA</color>
+    <color name="light_yellow_alert">#FFF9E1</color>
+    <color name="light_red_alert">#FDEAEA</color>
+    <color name="green_icon">#4CAF50</color>
+    <color name="yellow_icon">#FBC02D</color>
+    <color name="red_icon">#E53935</color>
 </resources>
