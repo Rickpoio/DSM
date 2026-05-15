@@ -1,59 +1,164 @@
 package com.example.proyectodecatedra
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.example.proyectodecatedra.data.MovimientoResponse
+import com.example.proyectodecatedra.data.usuariosData
+import com.example.proyectodecatedra.network.SupabaseProvider
+import com.google.firebase.auth.FirebaseAuth
+import de.hdodenhof.circleimageview.CircleImageView
+import io.github.jan.supabase.postgrest.from
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [PerfilFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PerfilFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private lateinit var imgPerfil: CircleImageView
+
+    private lateinit var tvNombre: TextView
+    private lateinit var tvAhorro: TextView
+    private lateinit var tvMaximo: TextView
+
+    private lateinit var btnEditar: ImageButton
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        val view = inflater.inflate(
+            R.layout.fragment_perfil,
+            container,
+            false
+        )
+
+        imgPerfil =
+            view.findViewById(R.id.imgPerfil)
+
+        tvNombre =
+            view.findViewById(R.id.tvNombre)
+
+        tvAhorro =
+            view.findViewById(R.id.tvAhorro)
+
+        tvMaximo =
+            view.findViewById(R.id.tvMaximo)
+
+        btnEditar =
+            view.findViewById(R.id.btnEditar)
+
+        obtenerDatosPerfil()
+
+        configurarBotonEditar()
+
+        return view
+    }
+
+    private fun obtenerDatosPerfil() {
+
+        val usuarioId = FirebaseAuth
+            .getInstance()
+            .currentUser
+            ?.uid ?: ""
+
+        if (usuarioId.isEmpty()) return
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            try {
+
+                // OBTENER USUARIO
+
+                val usuarios = SupabaseProvider.client
+                    .from("usuarios")
+                    .select()
+                    .decodeList<usuariosData>()
+
+                val usuario = usuarios.find {
+                    it.id == usuarioId
+                }
+
+                if (usuario != null) {
+
+                    tvNombre.text =
+                        usuario.nombre
+                }
+
+                // OBTENER MOVIMIENTOS
+
+                val movimientos = SupabaseProvider.client
+                    .from("movimientos")
+                    .select()
+                    .decodeList<MovimientoResponse>()
+
+                val movimientosUsuario =
+                    movimientos.filter {
+                        it.usuario_id == usuarioId
+                    }
+
+                var totalIngresos = 0.0
+
+                var totalGastos = 0.0
+
+                movimientosUsuario.forEach { mov ->
+
+                    val monto =
+                        mov.monto ?: 0.0
+
+                    if (
+                        mov.tipo?.lowercase() == "ingreso"
+                    ) {
+
+                        totalIngresos += monto
+                    }
+
+                    else if (
+                        mov.tipo?.lowercase() == "gasto"
+                    ) {
+
+                        totalGastos += monto
+                    }
+                }
+
+                val balanceFinal =
+                    totalIngresos - totalGastos
+
+                tvAhorro.text =
+                    "Total ahorrado: $%.2f"
+                        .format(balanceFinal)
+
+                tvMaximo.text =
+                    "Máximo ahorrado: $%.2f"
+                        .format(totalIngresos)
+
+            } catch (e: Exception) {
+
+                e.printStackTrace()
+
+                if (isAdded) {
+
+                    Toast.makeText(
+                        requireContext(),
+                        e.message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false)
-    }
+    private fun configurarBotonEditar() {
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PerfilFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PerfilFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        btnEditar.setOnClickListener {
+
+            // Aqui puedes abrir editar perfil
+        }
     }
 }
